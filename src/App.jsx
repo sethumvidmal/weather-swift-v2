@@ -1,27 +1,19 @@
-// import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import store from "./app/store";
+import Weather from "./pages/Weather/Weather";
 import ThemeProvider from "./theme";
-import Login from "./pages/Login/Login";
 
 const router = createBrowserRouter([
-  // {
-  //   path: "/conferences/:shortName/:year",
-  //   element: <Registration />,
-  // },
   {
-    path: "/",
-    element: <Login />,
+    path: "/weather",
+    element: <Weather />,
   },
 ]);
 
 const App = () => {
   return (
-    // <Provider store={store}>
     <ThemeProvider>
       <RouterProvider router={router} />
     </ThemeProvider>
-    // </Provider>
   );
 };
 
