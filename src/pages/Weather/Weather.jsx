@@ -44,28 +44,48 @@ const Weather = () => {
   return (
     <Box sx={{ minHeight: '100vh', position: 'relative' }}>
       <WeatherBackground condition={weatherData?.current?.condition?.text} />
-      <Container maxWidth="md" sx={{ pt: 2, pb: 4 }}>
-        <SearchBar onLocationSelect={handleLocationSelect} />
+      <Container 
+        maxWidth="md" 
+        sx={{ 
+          pt: 2, 
+          pb: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3 
+        }}
+      >
+        <Box sx={{ 
+          borderRadius: 4,
+          overflow: 'hidden',
+          backgroundColor: (theme) => theme.palette.mode === 'dark' 
+            ? 'rgba(0, 0, 0, 0.3)' 
+            : 'rgba(255, 255, 255, 0.3)',
+        }}>
+          <SearchBar onLocationSelect={handleLocationSelect} />
+        </Box>
+        
         {error && (
           <Box sx={{ 
             mt: 2, 
             p: 2, 
             bgcolor: 'error.main', 
             color: 'error.contrastText',
-            borderRadius: 1
+            borderRadius: 4,
+            backdropFilter: 'blur(10px)'
           }}>
             {error}
           </Box>
         )}
+        
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
             <CircularProgress />
           </Box>
         ) : (
-          <>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {weatherData && <CurrentWeather data={weatherData} />}
             {forecastData && <ForecastWeather data={forecastData} />}
-          </>
+          </Box>
         )}
       </Container>
     </Box>

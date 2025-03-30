@@ -25,6 +25,16 @@ const SearchWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: 2,
+  backgroundColor: theme.palette.mode === "dark" 
+    ? "rgba(0, 0, 0, 0.3)" 
+    : "rgba(255, 255, 255, 0.3)",
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.palette.mode === "dark"
+    ? "0 4px 30px rgba(0, 0, 0, 0.1)"
+    : "0 4px 30px rgba(255, 255, 255, 0.1)",
+  border: `1px solid ${theme.palette.mode === "dark" 
+    ? "rgba(255, 255, 255, 0.1)" 
+    : "rgba(209, 213, 219, 0.3)"}`
 }));
 
 const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
@@ -88,7 +98,7 @@ const SearchBar = ({ onLocationSelect }) => {
 
     try {
       const locations = await searchLocations(query);
-      setOptions(locations);
+      setOptions(locations || []);
     } catch (error) {
       console.error("Error fetching locations:", error);
       setOptions([]);
@@ -131,6 +141,7 @@ const SearchBar = ({ onLocationSelect }) => {
     setSelectedOption(newValue);
     if (newValue) {
       onLocationSelect(newValue);
+      setInputValue(newValue.name);
     }
   };
 
@@ -138,11 +149,17 @@ const SearchBar = ({ onLocationSelect }) => {
     if (inputValue) {
       if (!selectedOption) {
         const option = options.length > 0 ? options[0] : { name: inputValue, country: '' };
+        setSelectedOption(option);
         onLocationSelect(option);
       } else {
         onLocationSelect(selectedOption);
       }
     }
+  };
+
+  const isOptionEqualToValue = (option, value) => {
+    if (!option || !value) return false;
+    return option.name === value.name && option.country === value.country;
   };
 
   return (
@@ -155,10 +172,13 @@ const SearchBar = ({ onLocationSelect }) => {
         value={selectedOption}
         onInputChange={handleInputChange}
         onChange={handleLocationChange}
+        isOptionEqualToValue={isOptionEqualToValue}
         getOptionLabel={(option) =>
           typeof option === "string"
             ? option
-            : `${option.name}, ${option.country}`
+            : option
+            ? `${option.name}, ${option.country}`
+            : ""
         }
         renderInput={(params) => (
           <TextField
