@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CurrentWeather from "../../components/CurrentWeather";
 import ForecastWeather from "../../components/ForecastWeather";
 import SearchBar from "../../components/SearchBar";
+import WeatherBackground from '../../components/WeatherBackground';
 import { getCurrentWeather, getForecastWeather } from "../../services/api";
 
 const Weather = () => {
@@ -34,10 +35,20 @@ const Weather = () => {
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <SearchBar onSearch={fetchWeatherData} />
-      </Box>
+    <>
+      <WeatherBackground weatherCondition={currentWeather?.current?.condition?.text} />
+      <Container 
+        maxWidth="lg" 
+        sx={{ 
+          py: 4,
+          minHeight: '100vh',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <Box sx={{ mb: 4 }}>
+          <SearchBar onSearch={fetchWeatherData} />
+        </Box>
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
@@ -53,7 +64,8 @@ const Weather = () => {
           <ForecastWeather data={forecast} />
         </>
       )}
-    </Container>
+      </Container>
+    </>
   );
 };
 

@@ -1,0 +1,76 @@
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes rain {
+  0% { transform: translateY(-50px); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes sunny-shine {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.weather-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.rain-drop {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  animation: rain 1s linear infinite;
+}
+
+.sun {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255,223,67,0.8) 0%, rgba(255,223,67,0) 70%);
+  border-radius: 50%;
+  animation: sunny-shine 20s linear infinite;
+}
+
+.dark-theme {
+  background: linear-gradient(to bottom, #1a1a2e, #16213e);
+}
+
+.light-theme {
+  background: linear-gradient(to bottom, #87CEEB, #4682B4);
+}
+
+/* Weather condition specific backgrounds */
+.clear-sky {
+  background: var(--clear-sky-gradient);
+}
+
+.cloudy {
+  background: var(--cloudy-gradient);
+}
+
+.rainy {
+  background: var(--rainy-gradient);
+}
+
+.thunderstorm {
+  background: var(--thunderstorm-gradient);
+}

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Box, TextField, IconButton, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from '../hooks/useTheme';
 
 const SearchBar = ({ onSearch }) => {
   const [location, setLocation] = useState('');
+  const { darkMode, toggleTheme } = useTheme();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,7 +17,18 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 500, margin: '0 auto' }}>
+    <Box 
+      component="form" 
+      onSubmit={handleSubmit} 
+      sx={{ 
+        width: '100%', 
+        maxWidth: 500, 
+        margin: '0 auto',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2
+      }}
+    >
       <TextField
         fullWidth
         variant="outlined"
@@ -34,6 +49,15 @@ const SearchBar = ({ onSearch }) => {
           }
         }}
       />
+      <IconButton 
+        onClick={toggleTheme}
+        sx={{ 
+          backgroundColor: 'background.paper',
+          '&:hover': { backgroundColor: 'background.paper' },
+        }}
+      >
+        {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
     </Box>
   );
 };
