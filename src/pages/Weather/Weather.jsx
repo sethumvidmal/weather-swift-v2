@@ -1,71 +1,74 @@
-import { Box, CircularProgress, Container } from "@mui/material";
-import { useEffect, useState } from "react";
-import CurrentWeather from "../../components/CurrentWeather";
-import ForecastWeather from "../../components/ForecastWeather";
-import SearchBar from "../../components/SearchBar";
+import { useState, useEffect } from 'react';
+import { Container, Box, CircularProgress } from '@mui/material';
+import SearchBar from '../../components/SearchBar';
+import CurrentWeather from '../../components/CurrentWeather';
+import ForecastWeather from '../../components/ForecastWeather';
 import WeatherBackground from '../../components/WeatherBackground';
-import { getCurrentWeather, getForecastWeather } from "../../services/api";
+import { getCurrentWeather, getForecastWeather } from '../../services/api';
 
 const Weather = () => {
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [forecast, setForecast] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchWeatherData = async (location) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
       const [current, forecast] = await Promise.all([
         getCurrentWeather(location),
-        getForecastWeather(location),
+        getForecastWeather(location)
       ]);
-      setCurrentWeather(current);
-      setForecast(forecast);
+      setWeatherData(current);
+      setForecastData(forecast);
     } catch (err) {
-      setError("Failed to fetch weather data. Please try again.");
-      console.error("Error:", err);
+      console.error('Error fetching weather:', err);
+      setError('Failed to fetch weather data. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleLocationSelect = (location) => {
+    if (location && location.name) {
+      fetchWeatherData(location.name);
+    }
+  };
+
+  // Initial weather fetch for default location
   useEffect(() => {
-    fetchWeatherData("colombo");
+    fetchWeatherData('Colombo');
   }, []);
 
   return (
-    <>
-      <WeatherBackground weatherCondition={currentWeather?.current?.condition?.text} />
-      <Container 
-        maxWidth="lg" 
-        sx={{ 
-          py: 4,
-          minHeight: '100vh',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        <Box sx={{ mb: 4 }}>
-          <SearchBar onSearch={fetchWeatherData} />
-        </Box>
-
-      {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-          <CircularProgress />
-        </Box>
-      ) : error ? (
-        <Box sx={{ color: "error.main", textAlign: "center", py: 4 }}>
-          {error}
-        </Box>
-      ) : (
-        <>
-          <CurrentWeather data={currentWeather} />
-          <ForecastWeather data={forecast} />
-        </>
-      )}
+    <Box sx={{ minHeight: '100vh', position: 'relative' }}>
+      <WeatherBackground condition={weatherData?.current?.condition?.text} />
+      <Container maxWidth="md" sx={{ pt: 2, pb: 4 }}>
+        <SearchBar onLocationSelect={handleLocationSelect} />
+        {error && (
+          <Box sx={{ 
+            mt: 2, 
+            p: 2, 
+            bgcolor: 'error.main', 
+            color: 'error.contrastText',
+            borderRadius: 1
+          }}>
+            {error}
+          </Box>
+        )}
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {weatherData && <CurrentWeather data={weatherData} />}
+            {forecastData && <ForecastWeather data={forecastData} />}
+          </>
+        )}
       </Container>
-    </>
+    </Box>
   );
 };
 

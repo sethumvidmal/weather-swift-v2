@@ -3,9 +3,20 @@ import axios from 'axios';
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const BASE_URL = 'https://api.weatherapi.com/v1';
 
+const api = axios.create({
+  baseURL: BASE_URL,
+  params: {
+    key: API_KEY,
+  },
+});
+
 export const getCurrentWeather = async (location) => {
   try {
-    const response = await axios.get(`${BASE_URL}/current.json?q=${location}&key=${API_KEY}`);
+    const response = await api.get('/current.json', {
+      params: {
+        q: location,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching current weather:', error);
@@ -15,7 +26,12 @@ export const getCurrentWeather = async (location) => {
 
 export const getHistoryWeather = async (location, date) => {
   try {
-    const response = await axios.get(`${BASE_URL}/history.json?q=${location}&dt=${date}&key=${API_KEY}`);
+    const response = await api.get('/history.json', {
+      params: {
+        q: location,
+        dt: date,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching history weather:', error);
@@ -23,12 +39,33 @@ export const getHistoryWeather = async (location, date) => {
   }
 };
 
-export const getForecastWeather = async (location) => {
+export const getForecastWeather = async (location, days = 3) => {
   try {
-    const response = await axios.get(`${BASE_URL}/forecast.json?q=${location}&days=3&key=${API_KEY}`);
+    const response = await api.get('/forecast.json', {
+      params: {
+        q: location,
+        days,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching forecast weather:', error);
     throw error;
   }
 };
+
+export const searchLocations = async (query) => {
+  try {
+    const response = await api.get('/search.json', {
+      params: {
+        q: query,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error searching locations:', error);
+    throw error;
+  }
+};
+
+export default api;

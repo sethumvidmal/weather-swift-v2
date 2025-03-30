@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import {
   ThemeProvider as MuiThemeProvider,
   createTheme,
@@ -9,6 +9,10 @@ import { useTheme } from "./hooks/useTheme";
 import Weather from "./pages/Weather/Weather";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navigate to="/weather" replace />,
+  },
   {
     path: "/weather",
     element: <Weather />,
@@ -26,6 +30,15 @@ const ThemedApp = () => {
         paper: darkMode
           ? "rgba(255, 255, 255, 0.05)"
           : "rgba(255, 255, 255, 0.8)",
+      },
+    },
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1920,
       },
     },
   });
