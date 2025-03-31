@@ -25,16 +25,20 @@ const SearchWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: 2,
-  backgroundColor: theme.palette.mode === "dark" 
-    ? "rgba(0, 0, 0, 0.3)" 
-    : "rgba(255, 255, 255, 0.3)",
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? "rgba(0, 0, 0, 0.3)"
+      : "rgba(255, 255, 255, 0.3)",
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.palette.mode === "dark"
-    ? "0 4px 30px rgba(0, 0, 0, 0.1)"
-    : "0 4px 30px rgba(255, 255, 255, 0.1)",
-  border: `1px solid ${theme.palette.mode === "dark" 
-    ? "rgba(255, 255, 255, 0.1)" 
-    : "rgba(209, 213, 219, 0.3)"}`
+  boxShadow:
+    theme.palette.mode === "dark"
+      ? "0 4px 30px rgba(0, 0, 0, 0.1)"
+      : "0 4px 30px rgba(255, 255, 255, 0.1)",
+  border: `1px solid ${
+    theme.palette.mode === "dark"
+      ? "rgba(255, 255, 255, 0.1)"
+      : "rgba(209, 213, 219, 0.3)"
+  }`,
 }));
 
 const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
@@ -148,7 +152,8 @@ const SearchBar = ({ onLocationSelect }) => {
   const handleSearchClick = () => {
     if (inputValue) {
       if (!selectedOption) {
-        const option = options.length > 0 ? options[0] : { name: inputValue, country: '' };
+        const option =
+          options.length > 0 ? options[0] : { name: inputValue, country: "" };
         setSelectedOption(option);
         onLocationSelect(option);
       } else {
@@ -200,7 +205,7 @@ const SearchBar = ({ onLocationSelect }) => {
               ),
             }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleSearchClick();
               }
             }}

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import '../styles/WeatherAnimations.css';
-import { useTheme } from '../hooks/useTheme';
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import "../styles/WeatherAnimations.css";
+import { useTheme } from "../hooks/useTheme";
 
 const WeatherBackground = ({ weatherCondition }) => {
   const { darkMode } = useTheme();
@@ -10,65 +10,65 @@ const WeatherBackground = ({ weatherCondition }) => {
   useEffect(() => {
     const generateElements = () => {
       const newElements = [];
-      const condition = weatherCondition?.toLowerCase() || 'cloudy';
-      
-      switch(condition) {
-        case 'clear':
-        case 'sunny':
+      const condition = weatherCondition?.toLowerCase() || "cloudy";
+
+      switch (condition) {
+        case "clear":
+        case "sunny":
           for (let i = 0; i < 3; i++) {
             newElements.push({
-              type: 'sun',
+              type: "sun",
               style: {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 50}%`,
-                animationDelay: `${Math.random() * 2}s`
-              }
+                animationDelay: `${Math.random() * 2}s`,
+              },
             });
           }
           break;
-          
-        case 'cloudy':
-        case 'partly cloudy':
+
+        case "cloudy":
+        case "partly cloudy":
           for (let i = 0; i < 5; i++) {
             newElements.push({
-              type: 'cloud',
+              type: "cloud",
               style: {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 50}%`,
-                animationDelay: `${Math.random() * 5}s`
-              }
+                animationDelay: `${Math.random() * 5}s`,
+              },
             });
           }
           break;
-          
-        case 'rain':
-        case 'light rain':
-        case 'moderate rain':
+
+        case "rain":
+        case "light rain":
+        case "moderate rain":
           for (let i = 0; i < 50; i++) {
             newElements.push({
-              type: 'rain-drop',
+              type: "rain-drop",
               style: {
                 left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`
-              }
+                animationDelay: `${Math.random() * 2}s`,
+              },
             });
           }
           break;
-          
+
         default:
           // Default cloudy weather
           for (let i = 0; i < 3; i++) {
             newElements.push({
-              type: 'cloud',
+              type: "cloud",
               style: {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 50}%`,
-                animationDelay: `${Math.random() * 5}s`
-              }
+                animationDelay: `${Math.random() * 5}s`,
+              },
             });
           }
       }
-      
+
       setElements(newElements);
     };
 
@@ -76,13 +76,13 @@ const WeatherBackground = ({ weatherCondition }) => {
   }, [weatherCondition]);
 
   return (
-    <div className={`weather-background ${darkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div
+      className={`weather-background ${
+        darkMode ? "dark-theme" : "light-theme"
+      }`}
+    >
       {elements.map((element, index) => (
-        <div
-          key={index}
-          className={element.type}
-          style={element.style}
-        />
+        <div key={index} className={element.type} style={element.style} />
       ))}
     </div>
   );
@@ -93,7 +93,7 @@ WeatherBackground.propTypes = {
 };
 
 WeatherBackground.defaultProps = {
-  weatherCondition: 'cloudy',
+  weatherCondition: "cloudy",
 };
 
 export default WeatherBackground;
